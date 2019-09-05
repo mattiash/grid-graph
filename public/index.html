@@ -16,42 +16,8 @@
 
   <body>
     <div class="container">
-      <alert-box id="default">I am a default alert-box.</alert-box>
-    </div>
-    
-		<script>
-      // 1. Query all alert-box elements that do not have a "fixed" attribute.
-      const els = document.querySelectorAll('alert-box:not([fixed])')
-      // 2. Loop over each targeted element and add an event listener for the custom "close" event
-      //  that sets the hidden attribute to "true" when the user clicks the close (X) icon.
-      Array.from(els).forEach(el => {
-        el.addEventListener("close", (e) => {
-          // el.setAttribute('hidden', true)
-          el.setAttribute('primary', true)
-          console.log(e.detail)
-        })
-      })
-	
-    </script>
-    
+      <alert-box nodes='[["A","Bverylong","C"],["D","E","F"]]' connectors='[{"from":"A","to":"E"},{"from":"C","to":"F"},{"from":"F","to":"C"}]'>I am a default alert-box.</alert-box>
+    </div>    
   </body>
-
-	<style>
-    /* These styles can also be defined in the global.css file. */
-
-    /* These styles will be applied to all alert-boxes */
-    alert-box {
-      width: 300px;
-      margin: 5px;
-    }
-
-    /* These styles will only be applied to the alert-box with an id of "custom" */
-    alert-box#custom {
-      --alert-box-bg: teal;
-      --alert-box-text: #86f1ec;
-      font-family: sans-serif;
-    }
-
-	</style>
 
 </html>
