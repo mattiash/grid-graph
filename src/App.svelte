@@ -11,7 +11,6 @@
   $: _nodes = JSON.parse(nodes);
 
   let _connectors = [];
-  $: console.log(connectors);
   $: _connectors = JSON.parse(connectors);
 
   let divs = {};
@@ -54,7 +53,7 @@
             const x2 = box2.x1 - 4;
             const y1 = middle(box1.y1, box1.y2);
             const y2 = middle(box2.y1, box2.y2);
-            return { x1, y1, x2, y2 };
+            return { ...conn, x1, y1, x2, y2 };
           } else if (middle(box2.x1, box2.x2) < box1.x1) {
             console.log("from cannot be to the right of to");
           } else {
@@ -65,16 +64,17 @@
               const x2 = middle(box2.x1, box2.x2) + 5;
               const y1 = box1.y2;
               const y2 = box2.y1 - 4;
-              return { x1, y1, x2, y2 };
+              return { ...conn, x1, y1, x2, y2 };
             } else {
               const x1 = middle(box1.x1, box1.x2) - 5;
               const x2 = middle(box2.x1, box2.x2) - 5;
               const y1 = box1.y1;
               const y2 = box2.y2 + 4;
-              return { x1, y1, x2, y2 };
+              return { ...conn, x1, y1, x2, y2 };
             }
           }
         }
+        return conn;
       });
     }, 100);
 
@@ -89,14 +89,15 @@
   }
 
   .node {
+    display: inline-block;
     border-radius: 5px;
     padding: 16px;
-    /* Customizable Styles */
-    background: var(--alert-box-bg, #e2e3e5);
-    color: var(--alert-box-text, #383d41);
+    background: #e2e3e5;
+    color: #383d41;
     margin: 30px;
     text-align: center;
     min-width: 50px;
+    width: auto;
   }
 
   svg {
@@ -113,6 +114,7 @@
 
   td {
     padding: 0;
+    text-align: center;
   }
 </style>
 
@@ -134,7 +136,7 @@ We also have to include the "customElement: true" compiler setting in rollup con
         <path d="M0,0 V6 L3,3 Z" fill="black" />
       </marker>
     </defs>
-    {#each _connectors as conn}
+    {#each _connectors as conn (conn.from)}
       <path
         class="connector"
         d="M {conn.x1 || 0}
