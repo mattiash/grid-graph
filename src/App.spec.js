@@ -12,7 +12,7 @@ describe("App", () => {
     const button = await waitForElement(() => getByRole("button"));
 
     button.addEventListener("close", e => {
-      expect(e.detail).toBe("alert-box was closed.");
+      expect(e.detail).toBe("grid-graph was closed.");
     });
 
     fireEvent.click(getByRole("button"));

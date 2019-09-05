@@ -120,7 +120,7 @@
 This tells the Svelte compiler that this file is a custom element. 
 We also have to include the "customElement: true" compiler setting in rollup configuration.
 -->
-<svelte:options tag="alert-box" />
+<svelte:options tag="grid-graph" />
 <div class="container">
   <svg style="width: {svgWidth}px; height: {svgHeight}px">
     <defs>
