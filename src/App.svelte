@@ -18,14 +18,14 @@
     _nodes.forEach(row => {
       row.forEach(n => {
         if (!divs[n]) {
-          divs[n] = {};
+          divs[n] = { ref: null };
         }
       });
     });
   }
 
   function bbox(id) {
-    const comp = divs[id].ref;
+    const comp = divs[id] && divs[id].ref;
     if (comp && comp.offsetParent) {
       const x1 = comp.offsetLeft + comp.offsetParent.offsetLeft;
       const y1 = comp.offsetTop + comp.offsetParent.offsetTop;
