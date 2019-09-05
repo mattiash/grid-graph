@@ -43,6 +43,18 @@
 
   onMount(async () => {
     setTimeout(() => {
+      let width = 0;
+      let height = 0;
+      _nodes.forEach(row => {
+        row.forEach(node => {
+          const box = bbox(node);
+          width = Math.max(box.x2, width);
+          height = Math.max(box.y2, height);
+        });
+      });
+      svgWidth = width;
+      svgHeight = height;
+
       _connectors = _connectors.map(conn => {
         const box1 = bbox(conn.from);
         const box2 = bbox(conn.to);
@@ -77,9 +89,6 @@
         return conn;
       });
     }, 100);
-
-    svgWidth = 500;
-    svgHeight = 500;
   });
 </script>
 
