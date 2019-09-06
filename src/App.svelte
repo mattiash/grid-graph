@@ -90,6 +90,27 @@
       });
     }, 100);
   });
+
+  /*
+  Create a custom "close" event that is fired when the user clicks on the close (X) icon.
+  Users can subscribe to this event by targeting the custom element and adding an event
+  listener for this custom event. It's completely up to the end user to decide how they want to 
+  handle the closing of the element. i.e hidden vs. display, apply animation, etc...
+  This is demonstrated in the index.html file.
+  */
+  function dispatchClickEvent(e) {
+    const nodeId = e.originalTarget.dataset.id;
+    // 1. Create the custom event.
+    const event = new CustomEvent("node-click", {
+      detail: `grid-graph node click`,
+      bubbles: true,
+      cancelable: true,
+      composed: true, // makes the event jump shadow DOM boundary
+      detail: { nodeId }
+    });
+    // 2. Dispatch the custom event.
+    this.dispatchEvent(event);
+  }
 </script>
 
 <style>
@@ -107,12 +128,16 @@
     text-align: center;
     min-width: 50px;
     width: auto;
+    z-index: 100;
+    cursor: pointer;
   }
 
   svg {
     position: absolute;
     top: 0;
     left: 0;
+    z-index: 0;
+    pointer-events: none;
   }
 
   path.connector {
@@ -164,7 +189,13 @@ We also have to include the "customElement: true" compiler setting in rollup con
         <tr>
           {#each row as node}
             <td>
-              <div class="node" bind:this={divs[node].ref}>{node}</div>
+              <div
+                class="node"
+                data-id={node}
+                bind:this={divs[node].ref}
+                on:click={dispatchClickEvent}>
+                {node}
+              </div>
             </td>
           {/each}
         </tr>
