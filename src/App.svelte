@@ -17,7 +17,7 @@
   $: {
     _nodes.forEach(row => {
       row.forEach(n => {
-        if (!divs[n.id]) {
+        if (n && !divs[n.id]) {
           divs[n.id] = { ref: null };
         }
       });
@@ -47,9 +47,11 @@
       let height = 0;
       _nodes.forEach(row => {
         row.forEach(node => {
-          const box = bbox(node.id);
-          width = Math.max(box.x2, width);
-          height = Math.max(box.y2, height);
+          if (node) {
+            const box = bbox(node.id);
+            width = Math.max(box.x2, width);
+            height = Math.max(box.y2, height);
+          }
         });
       });
       svgWidth = width;
@@ -73,13 +75,13 @@
             if (box1.y1 < box2.y2) {
               // from above to
               const x1 = middle(box1.x1, box1.x2) + 5;
-              const x2 = middle(box2.x1, box2.x2) + 5;
+              const x2 = x1;
               const y1 = box1.y2;
               const y2 = box2.y1 - 4;
               return { ...conn, x1, y1, x2, y2 };
             } else {
               const x1 = middle(box1.x1, box1.x2) - 5;
-              const x2 = middle(box2.x1, box2.x2) - 5;
+              const x2 = x1;
               const y1 = box1.y1;
               const y2 = box2.y2 + 4;
               return { ...conn, x1, y1, x2, y2 };
@@ -101,7 +103,7 @@
   function dispatchClickEvent(e) {
     const nodeId = e.originalTarget.dataset.id;
     // 1. Create the custom event.
-    const event = new CustomEvent("node-click", {
+    const event = new CustomEvent("nodeclick", {
       detail: `grid-graph node click`,
       bubbles: true,
       cancelable: true,
@@ -180,31 +182,35 @@ We also have to include the "customElement: true" compiler setting in rollup con
         <path d="M0,0 V6 L3,3 Z" />
       </marker>
     </defs>
-    {#each _connectors as conn (conn.from)}
-      <path
-        d="M {conn.x1 || 0}
-        {conn.y1 || 0} C {middle(conn.x1 || 0, conn.x2 || 0)}
-        {conn.y1 || 0}
-        {middle(conn.x1 || 0, conn.x2 || 0)}
-        {conn.y2 || 0}
-        {conn.x2 || 0}
-        {conn.y2 || 0}"
-        marker-end="url(#head)" />
+    {#each _connectors as conn (conn)}
+      {#if conn.x1 !== undefined}
+        <path
+          d="M {conn.x1}
+          {conn.y1} C {middle(conn.x1, conn.x2)}
+          {conn.y1}
+          {middle(conn.x1, conn.x2)}
+          {conn.y2}
+          {conn.x2}
+          {conn.y2}"
+          marker-end="url(#head)" />
+      {/if}
     {/each}
   </svg>
   <table>
     <tbody>
       {#each _nodes as row}
         <tr>
-          {#each row as node (node.id)}
+          {#each row as node}
             <td>
-              <div
-                class="node {node.class}"
-                data-id={node.id}
-                bind:this={divs[node.id].ref}
-                on:click={dispatchClickEvent}>
-                {node.id}
-              </div>
+              {#if node}
+                <div
+                  class="node {node.class}"
+                  data-id={node.id}
+                  bind:this={divs[node.id].ref}
+                  on:click={dispatchClickEvent}>
+                  {node.id}
+                </div>
+              {/if}
             </td>
           {/each}
         </tr>

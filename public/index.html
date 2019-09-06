@@ -44,8 +44,8 @@
       Array.from(els).forEach(el => {
         el.setAttribute('nodes', JSON.stringify(nodes))
         el.setAttribute('connectors', JSON.stringify(connectors))
-        el.addEventListener("node-click", (e) => {
-          console.log(e.detail)
+        el.addEventListener("nodeclick", (e) => {
+          console.log('x', e.detail)
         })
       })</script>
 </html>
