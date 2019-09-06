@@ -17,8 +17,8 @@
   $: {
     _nodes.forEach(row => {
       row.forEach(n => {
-        if (!divs[n]) {
-          divs[n] = { ref: null };
+        if (!divs[n.id]) {
+          divs[n.id] = { ref: null };
         }
       });
     });
@@ -47,7 +47,7 @@
       let height = 0;
       _nodes.forEach(row => {
         row.forEach(node => {
-          const box = bbox(node);
+          const box = bbox(node.id);
           width = Math.max(box.x2, width);
           height = Math.max(box.y2, height);
         });
@@ -122,14 +122,19 @@
     display: inline-block;
     border-radius: 5px;
     padding: 16px;
-    background: #e2e3e5;
-    color: #383d41;
+    background: var(--node-background, #e2e3e5);
+    color: var(--node-color, #383d41);
     margin: 30px;
     text-align: center;
     min-width: 50px;
     width: auto;
     z-index: 100;
     cursor: pointer;
+  }
+
+  .node.selected {
+    color: var(--node-selected-color, black);
+    background: var(--node-selected-background, #929395);
   }
 
   svg {
@@ -140,10 +145,15 @@
     pointer-events: none;
   }
 
-  path.connector {
+  path {
     stroke-width: 2px;
-    stroke: rgb(0, 0, 0);
+    stroke: var(--connector-color, black);
     fill: transparent;
+  }
+
+  marker path {
+    stroke-width: 0;
+    fill: var(--connector-color, black);
   }
 
   td {
@@ -167,12 +177,11 @@ We also have to include the "customElement: true" compiler setting in rollup con
         markerHeight="6"
         refX="0.1"
         refY="3">
-        <path d="M0,0 V6 L3,3 Z" fill="black" />
+        <path d="M0,0 V6 L3,3 Z" />
       </marker>
     </defs>
     {#each _connectors as conn (conn.from)}
       <path
-        class="connector"
         d="M {conn.x1 || 0}
         {conn.y1 || 0} C {middle(conn.x1 || 0, conn.x2 || 0)}
         {conn.y1 || 0}
@@ -187,14 +196,14 @@ We also have to include the "customElement: true" compiler setting in rollup con
     <tbody>
       {#each _nodes as row}
         <tr>
-          {#each row as node}
+          {#each row as node (node.id)}
             <td>
               <div
-                class="node"
-                data-id={node}
-                bind:this={divs[node].ref}
+                class="node {node.class}"
+                data-id={node.id}
+                bind:this={divs[node.id].ref}
                 on:click={dispatchClickEvent}>
-                {node}
+                {node.id}
               </div>
             </td>
           {/each}

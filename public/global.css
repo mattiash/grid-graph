@@ -11,3 +11,11 @@ These styles will NOT be applied to the Shadow DOM root of the custom element.
   height: 100%;
   font-family: sans-serif;
 }
+
+grid-graph {
+  --node-color: blue;
+  --node-background:lightblue;
+  --node-selected-color: red;
+  --node-selected-background: pink;
+  --connector-color: green;
+}

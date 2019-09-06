@@ -16,15 +16,34 @@
 
   <body>
     <div class="container">
-      <grid-graph nodes='[["A","Bveryverylonglong","C"],["D","E","F"]]' connectors='[{"from":"A","to":"E"},{"from":"C","to":"F"},{"from":"F","to":"C"}]'>I am a default grid-graph.</grid-graph>
+      <grid-graph>I am a default grid-graph.</grid-graph>
     </div>    
   </body>
 
   <script>
+
+      const nodes = [
+        [ { id: 'A', class: 'selected' },
+          { id: 'Bveryverylonglong', },
+          { id: 'C' },
+        ],
+        [
+          { id: 'D', },
+          { id: 'E', },
+          { id: 'F' },
+        ]
+      ];
+      const connectors = [
+        { from:'A', to:'E'},
+        { from:'C', to:'F'},
+        { from:'F', to:'C'}
+      ]
       const els = document.querySelectorAll('grid-graph')
       // 2. Loop over each targeted element and add an event listener for the custom "close" event
       //  that sets the hidden attribute to "true" when the user clicks the close (X) icon.
       Array.from(els).forEach(el => {
+        el.setAttribute('nodes', JSON.stringify(nodes))
+        el.setAttribute('connectors', JSON.stringify(connectors))
         el.addEventListener("node-click", (e) => {
           console.log(e.detail)
         })
