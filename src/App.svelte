@@ -93,13 +93,6 @@
     }, 100);
   });
 
-  /*
-  Create a custom "close" event that is fired when the user clicks on the close (X) icon.
-  Users can subscribe to this event by targeting the custom element and adding an event
-  listener for this custom event. It's completely up to the end user to decide how they want to 
-  handle the closing of the element. i.e hidden vs. display, apply animation, etc...
-  This is demonstrated in the index.html file.
-  */
   function dispatchClickEvent(e) {
     const nodeId = e.originalTarget.dataset.id;
     // 1. Create the custom event.
@@ -124,19 +117,12 @@
     display: inline-block;
     border-radius: 5px;
     padding: 16px;
-    background: var(--node-background, #e2e3e5);
-    color: var(--node-color, #383d41);
     margin: 30px;
     text-align: center;
     min-width: 50px;
     width: auto;
     z-index: 100;
     cursor: pointer;
-  }
-
-  .node.selected {
-    color: var(--node-selected-color, black);
-    background: var(--node-selected-background, #929395);
   }
 
   svg {
@@ -149,13 +135,12 @@
 
   path {
     stroke-width: 2px;
-    stroke: var(--connector-color, black);
     fill: transparent;
   }
 
   marker path {
     stroke-width: 0;
-    fill: var(--connector-color, black);
+    fill: inherit;
   }
 
   td {
@@ -192,6 +177,7 @@ We also have to include the "customElement: true" compiler setting in rollup con
           {conn.y2}
           {conn.x2}
           {conn.y2}"
+          style="stroke: {conn.color || 'black'}"
           marker-end="url(#head)" />
       {/if}
     {/each}
@@ -204,7 +190,8 @@ We also have to include the "customElement: true" compiler setting in rollup con
             <td>
               {#if node}
                 <div
-                  class="node {node.class}"
+                  class="node"
+                  style="color: {node.color || '#383d41'}; background: {node.background || ' #e2e3e5'}"
                   data-id={node.id}
                   bind:this={divs[node.id].ref}
                   on:click={dispatchClickEvent}>
