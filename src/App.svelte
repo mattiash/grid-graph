@@ -97,7 +97,6 @@
     const nodeId = e.originalTarget.dataset.id;
     // 1. Create the custom event.
     const event = new CustomEvent("nodeclick", {
-      detail: `grid-graph node click`,
       bubbles: true,
       cancelable: true,
       composed: true, // makes the event jump shadow DOM boundary
