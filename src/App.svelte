@@ -151,7 +151,7 @@
     display: inline-block;
     border-radius: 5px;
     padding: 16px;
-    margin: 30px;
+    margin: 10px 30px;
     text-align: center;
     min-width: 50px;
     width: auto;
@@ -206,10 +206,10 @@ We also have to include the "customElement: true" compiler setting in rollup con
           <!-- Straight down -->
           <path
             d="M {conn.x1}
-            {conn.y1} C {conn.x1 + 10}
-            {conn.y1 + 20}
-            {conn.x1 + 10}
-            {conn.y2 - 20}
+            {conn.y1} C {conn.x1 + 5}
+            {middle(conn.y1, conn.y2)}
+            {conn.x1 + 5}
+            {middle(conn.y1, conn.y2)}
             {conn.x2}
             {conn.y2}"
             style="stroke: {conn.color || 'black'}"
@@ -218,10 +218,10 @@ We also have to include the "customElement: true" compiler setting in rollup con
           <!-- Straight up -->
           <path
             d="M {conn.x1}
-            {conn.y1} C {conn.x1 - 10}
-            {conn.y1 - 20}
-            {conn.x1 - 10}
-            {conn.y2 + 20}
+            {conn.y1} C {conn.x1 - 5}
+            {middle(conn.y1, conn.y2)}
+            {conn.x1 - 5}
+            {middle(conn.y1, conn.y2)}
             {conn.x2}
             {conn.y2}"
             style="stroke: {conn.color || 'black'}"
