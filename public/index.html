@@ -23,16 +23,24 @@
   <script>
 
       const nodes = [
-        [ { id: 'A', background: '#777', color: 'black' },
+        [ { id: 'A' },
           { id: 'Bveryverylonglong', },
           { id: 'C' },
         ],
         [
-          { id: 'D', },
+          undefined,
           { id: 'E', },
           { id: 'F' },
         ]
       ];
+      nodes.forEach( row => {
+        row.forEach( node => {
+          if(node) {
+            node.background = '#e2e3e5'
+          }
+        })
+      })
+
       const connectors = [
         { from:'A', to:'E', color: 'blue'},
         { from:'C', to:'F'},
@@ -45,7 +53,16 @@
         el.setAttribute('nodes', JSON.stringify(nodes))
         el.setAttribute('connectors', JSON.stringify(connectors))
         el.addEventListener("nodeclick", (e) => {
-          console.log('nodeclick', e.detail)
+          const nodeId = e.detail.nodeId
+          console.log('nodeclick', nodeId)
+          nodes.forEach( row => {
+            row.forEach( node => {
+              if(node) {
+                node.background = node.id === nodeId ? 'red' : '#e2e3e5'
+              }
+            })
+          })
+          el.setAttribute('nodes', JSON.stringify(nodes))
         })
       })</script>
 </html>

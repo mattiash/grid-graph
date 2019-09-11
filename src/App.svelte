@@ -1,17 +1,31 @@
 <script>
-  import { onMount, tick } from "svelte";
+  import { afterUpdate, onDestroy, tick } from "svelte";
 
+  const internalPrefix = "__gg__";
   let svgWidth = 100;
   let svgHeight = 100;
 
   export let nodes = "[]";
   export let connectors = "[]";
 
+  let placed = false;
+  let destroyed = false;
+
   let _nodes = [];
-  $: _nodes = JSON.parse(nodes);
+  $: {
+    _nodes = JSON.parse(nodes).map((row, y) => {
+      return row.map((node, x) =>
+        !!node ? node : { id: `${internalPrefix}${x}_${y}` }
+      );
+    });
+    placed = false;
+  }
 
   let _connectors = [];
-  $: _connectors = JSON.parse(connectors);
+  $: {
+    _connectors = JSON.parse(connectors);
+    placed = false;
+  }
 
   let divs = {};
   $: {
@@ -46,7 +60,7 @@
     let height = 0;
     for (let row of _nodes) {
       for (let node of row) {
-        if (node) {
+        if (node && !node.id.startsWith(internalPrefix)) {
           const box = bbox(node.id);
 
           if (!box) {
@@ -99,24 +113,27 @@
     return true;
   }
 
-  onMount(async () => {
-    let placed = false;
-    while (!placed) {
-      await sleep(10);
+  afterUpdate(async () => {
+    while (!placed && !destroyed) {
       placed = placeArrows();
+      await sleep(1000);
     }
+  });
+
+  onDestroy(() => {
+    destroyed = true;
   });
 
   function dispatchClickEvent(e) {
     const nodeId = e.originalTarget.dataset.id;
-    // 1. Create the custom event.
+
     const event = new CustomEvent("nodeclick", {
       bubbles: true,
       cancelable: true,
       composed: true, // makes the event jump shadow DOM boundary
       detail: { nodeId }
     });
-    // 2. Dispatch the custom event.
+
     this.dispatchEvent(event);
   }
 
@@ -226,11 +243,11 @@ We also have to include the "customElement: true" compiler setting in rollup con
   </svg>
   <table>
     <tbody>
-      {#each _nodes as row}
+      {#each _nodes as row (row)}
         <tr>
-          {#each row as node}
+          {#each row as node (node.id)}
             <td>
-              {#if node}
+              {#if !node.id.startsWith(internalPrefix)}
                 <div
                   class="node"
                   style="color: {node.color || '#383d41'}; background: {node.background || ' #e2e3e5'}"
