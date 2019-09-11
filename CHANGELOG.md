@@ -6,9 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0] - 2019-09-11
+
 - Remove selected property for nodes and replace it with color and background properties
 - Add color property to connectors
-
+- Bend lines going straight up or down slightly.
+- 
 ## [0.0.1] - 2019-09-10
 
 Initial release.
