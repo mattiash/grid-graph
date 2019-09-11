@@ -254,7 +254,7 @@ We also have to include the "customElement: true" compiler setting in rollup con
                   data-id={node.id}
                   bind:this={divs[node.id].ref}
                   on:click={dispatchClickEvent}>
-                  {node.id}
+                  {node.title || node.id}
                 </div>
               {/if}
             </td>
