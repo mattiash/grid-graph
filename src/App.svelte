@@ -159,25 +159,51 @@ We also have to include the "customElement: true" compiler setting in rollup con
       {#if conn.x1 !== undefined}
         <defs>
           <marker
-            id="{conn.from+conn.to}"
+            id={conn.from + conn.to}
             orient="auto"
             markerWidth="3"
             markerHeight="6"
             refX="0.1"
             refY="3">
-            <path d="M0,0 V6 L3,3 Z" style="fill: {conn.color || 'black'}" />
+            <path d="M0,0 V6 L3,3 Z" style="fill: {conn.color || 'black'}" />
           </marker>
         </defs>
-        <path
-          d="M {conn.x1}
-          {conn.y1} C {middle(conn.x1, conn.x2)}
-          {conn.y1}
-          {middle(conn.x1, conn.x2)}
-          {conn.y2}
-          {conn.x2}
-          {conn.y2}"
-          style="stroke: {conn.color || 'black'}"
-          marker-end="url(#{conn.from+conn.to})" />
+        {#if conn.x1 === conn.x2 && conn.y1 < conn.y2}
+          <!-- Straight down -->
+          <path
+            d="M {conn.x1}
+            {conn.y1} C {conn.x1 + 10}
+            {conn.y1 + 20}
+            {conn.x1 + 10}
+            {conn.y2 - 20}
+            {conn.x2}
+            {conn.y2}"
+            style="stroke: {conn.color || 'black'}"
+            marker-end="url(#{conn.from + conn.to})" />
+        {:else if conn.x1 === conn.x2 && conn.y1 > conn.y2}
+          <!-- Straight up -->
+          <path
+            d="M {conn.x1}
+            {conn.y1} C {conn.x1 - 10}
+            {conn.y1 - 20}
+            {conn.x1 - 10}
+            {conn.y2 + 20}
+            {conn.x2}
+            {conn.y2}"
+            style="stroke: {conn.color || 'black'}"
+            marker-end="url(#{conn.from + conn.to})" />
+        {:else}
+          <path
+            d="M {conn.x1}
+            {conn.y1} C {middle(conn.x1, conn.x2)}
+            {conn.y1}
+            {middle(conn.x1, conn.x2)}
+            {conn.y2}
+            {conn.x2}
+            {conn.y2}"
+            style="stroke: {conn.color || 'black'}"
+            marker-end="url(#{conn.from + conn.to})" />
+        {/if}
       {/if}
     {/each}
   </svg>
