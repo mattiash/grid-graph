@@ -140,7 +140,6 @@
 
   marker path {
     stroke-width: 0;
-    fill: inherit;
   }
 
   td {
@@ -156,19 +155,19 @@ We also have to include the "customElement: true" compiler setting in rollup con
 <svelte:options tag="grid-graph" />
 <div class="container">
   <svg style="width: {svgWidth}px; height: {svgHeight}px">
-    <defs>
-      <marker
-        id="head"
-        orient="auto"
-        markerWidth="3"
-        markerHeight="6"
-        refX="0.1"
-        refY="3">
-        <path d="M0,0 V6 L3,3 Z" />
-      </marker>
-    </defs>
     {#each _connectors as conn (conn)}
       {#if conn.x1 !== undefined}
+        <defs>
+          <marker
+            id="{conn.from+conn.to}"
+            orient="auto"
+            markerWidth="3"
+            markerHeight="6"
+            refX="0.1"
+            refY="3">
+            <path d="M0,0 V6 L3,3 Z" style="fill: {conn.color || 'black'}" />
+          </marker>
+        </defs>
         <path
           d="M {conn.x1}
           {conn.y1} C {middle(conn.x1, conn.x2)}
@@ -178,7 +177,7 @@ We also have to include the "customElement: true" compiler setting in rollup con
           {conn.x2}
           {conn.y2}"
           style="stroke: {conn.color || 'black'}"
-          marker-end="url(#head)" />
+          marker-end="url(#{conn.from+conn.to})" />
       {/if}
     {/each}
   </svg>
