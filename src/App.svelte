@@ -41,56 +41,70 @@
     return (a + b) / 2;
   }
 
-  onMount(async () => {
-    setTimeout(() => {
-      let width = 0;
-      let height = 0;
-      _nodes.forEach(row => {
-        row.forEach(node => {
-          if (node) {
-            const box = bbox(node.id);
-            width = Math.max(box.x2, width);
-            height = Math.max(box.y2, height);
-          }
-        });
-      });
-      svgWidth = width;
-      svgHeight = height;
+  function placeArrows() {
+    let width = 0;
+    let height = 0;
+    for (let row of _nodes) {
+      for (let node of row) {
+        if (node) {
+          const box = bbox(node.id);
 
-      _connectors = _connectors.map(conn => {
-        const box1 = bbox(conn.from);
-        const box2 = bbox(conn.to);
-        if (box1 && box2) {
-          if (box1.x2 < box2.x1) {
-            // box1 left of box2
-            const x1 = box1.x2;
-            const x2 = box2.x1 - 4;
-            const y1 = middle(box1.y1, box1.y2);
-            const y2 = middle(box2.y1, box2.y2);
+          if (!box) {
+            // The div has not been placed yet.
+            // Abort!
+            return false;
+          }
+          width = Math.max(box.x2, width);
+          height = Math.max(box.y2, height);
+        }
+      }
+    }
+    svgWidth = width;
+    svgHeight = height;
+
+    _connectors = _connectors.map(conn => {
+      const box1 = bbox(conn.from);
+      const box2 = bbox(conn.to);
+      if (box1 && box2) {
+        if (box1.x2 < box2.x1) {
+          // box1 left of box2
+          const x1 = box1.x2;
+          const x2 = box2.x1 - 4;
+          const y1 = middle(box1.y1, box1.y2);
+          const y2 = middle(box2.y1, box2.y2);
+          return { ...conn, x1, y1, x2, y2 };
+        } else if (middle(box2.x1, box2.x2) < box1.x1) {
+          console.log("from cannot be to the right of to");
+        } else {
+          // same column
+          if (box1.y1 < box2.y2) {
+            // from above to
+            const x1 = middle(box1.x1, box1.x2) + 5;
+            const x2 = x1;
+            const y1 = box1.y2;
+            const y2 = box2.y1 - 4;
             return { ...conn, x1, y1, x2, y2 };
-          } else if (middle(box2.x1, box2.x2) < box1.x1) {
-            console.log("from cannot be to the right of to");
           } else {
-            // same column
-            if (box1.y1 < box2.y2) {
-              // from above to
-              const x1 = middle(box1.x1, box1.x2) + 5;
-              const x2 = x1;
-              const y1 = box1.y2;
-              const y2 = box2.y1 - 4;
-              return { ...conn, x1, y1, x2, y2 };
-            } else {
-              const x1 = middle(box1.x1, box1.x2) - 5;
-              const x2 = x1;
-              const y1 = box1.y1;
-              const y2 = box2.y2 + 4;
-              return { ...conn, x1, y1, x2, y2 };
-            }
+            const x1 = middle(box1.x1, box1.x2) - 5;
+            const x2 = x1;
+            const y1 = box1.y1;
+            const y2 = box2.y2 + 4;
+            return { ...conn, x1, y1, x2, y2 };
           }
         }
-        return conn;
-      });
-    }, 100);
+      }
+      return conn;
+    });
+
+    return true;
+  }
+
+  onMount(async () => {
+    let placed = false;
+    while (!placed) {
+      await sleep(10);
+      placed = placeArrows();
+    }
   });
 
   function dispatchClickEvent(e) {
@@ -104,6 +118,10 @@
     });
     // 2. Dispatch the custom event.
     this.dispatchEvent(event);
+  }
+
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 </script>
 

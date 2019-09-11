@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Retry arrow placement until boxes are placed
+
 ## [1.0.0] - 2019-09-11
 
 - Remove selected property for nodes and replace it with color and background properties
