@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2019-09-12
+
 - Add a title property that overrides id as the text in the node
 
 ## [1.0.3] - 2019-09-11
