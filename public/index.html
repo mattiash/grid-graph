@@ -27,6 +27,9 @@
                 { id: 'C', title: 'Node C' },
             ],
             [undefined, { id: 'E' }, { id: 'F' }],
+            [{ id: 'G' }, { id: 'I' }],
+            [undefined, { id: 'J' }],
+            [{ id: 'H' }, { id: 'K' }],
         ]
         nodes.forEach(row => {
             row.forEach(node => {
@@ -41,6 +44,12 @@
             { from: 'A', to: 'Bveryverylonglong' },
             { from: 'C', to: 'F' },
             { from: 'F', to: 'C' },
+            { from: 'G', to: 'I' },
+            { from: 'G', to: 'J' },
+            { from: 'G', to: 'K' },
+            { from: 'H', to: 'I' },
+            { from: 'H', to: 'J' },
+            { from: 'H', to: 'K' },
         ]
         const els = document.querySelectorAll('grid-graph')
         // 2. Loop over each targeted element and add an event listener for the custom "close" event
