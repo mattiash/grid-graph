@@ -10,7 +10,22 @@
 
   let placed = false;
   let destroyed = false;
+  let nodeMap = new Map();
 
+  // _nodes is a two-dimensional array with nodes.
+  // Each node looks like this:
+  // {
+  //   id: string
+  //   title?: string
+  //   color?: string
+  //   background?: string
+  //   box?: {
+  //     x1: number
+  //     y1: number
+  //     x2: number
+  //     y2: number
+  //   }
+  // }
   let _nodes = [];
   $: {
     _nodes = JSON.parse(nodes).map((row, y) => {
@@ -18,6 +33,7 @@
         !!node ? node : { id: `${internalPrefix}${x}_${y}` }
       );
     });
+
     placed = false;
   }
 
@@ -29,10 +45,13 @@
 
   let divs = {};
   $: {
+    nodeMap = new Map();
+
     _nodes.forEach(row => {
-      row.forEach(n => {
-        if (n && !divs[n.id]) {
-          divs[n.id] = { ref: null };
+      row.forEach(node => {
+        nodeMap.set(node.id, node);
+        if (node && !divs[node.id]) {
+          divs[node.id] = { ref: null };
         }
       });
     });
@@ -55,30 +74,44 @@
     return (a + b) / 2;
   }
 
-  function placeArrows() {
-    let width = 0;
-    let height = 0;
+  function addNodePositions() {
     for (let row of _nodes) {
       for (let node of row) {
         if (node && !node.id.startsWith(internalPrefix)) {
-          const box = bbox(node.id);
+          node.box = bbox(node.id);
 
-          if (!box) {
+          if (!node.box) {
             // The div has not been placed yet.
             // Abort!
             return false;
           }
-          width = Math.max(box.x2, width);
-          height = Math.max(box.y2, height);
         }
       }
     }
+    return true;
+  }
+
+  function placeArrows() {
+    let width = 0;
+    let height = 0;
+
+    if (!addNodePositions()) {
+      return false;
+    }
+
+    for (const node of nodeMap.values()) {
+      if (node.box) {
+        width = Math.max(node.box.x2, width);
+        height = Math.max(node.box.y2, height);
+      }
+    }
+
     svgWidth = width;
     svgHeight = height;
 
     _connectors = _connectors.map(conn => {
-      const box1 = bbox(conn.from);
-      const box2 = bbox(conn.to);
+      const box1 = nodeMap.get(conn.from).box;
+      const box2 = nodeMap.get(conn.to).box;
       if (box1 && box2) {
         if (box1.x2 < box2.x1) {
           // box1 left of box2

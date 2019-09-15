@@ -42,9 +42,10 @@
       })
 
       const connectors = [
-        { from:'A', to:'E', color: 'blue'},
-        { from:'C', to:'F'},
-        { from:'F', to:'C'}
+        { from:'A', to:'E', color: 'blue' },
+        { from: 'A', to: 'Bveryverylonglong' },
+        { from:'C', to:'F' },
+        { from:'F', to:'C' }
       ]
       const els = document.querySelectorAll('grid-graph')
       // 2. Loop over each targeted element and add an event listener for the custom "close" event
