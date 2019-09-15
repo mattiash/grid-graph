@@ -1,4 +1,4 @@
-export { default as App } from "./App.svelte";
+export { default as App } from './App.svelte'
 
 // *****************************************
 // * Notice that the component is not instantiated and mounted to the document <body className="">

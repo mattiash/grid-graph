@@ -4,66 +4,63 @@
 -->
 <script src="bundle.js"></script>
 
-<!doctype html />
+<!DOCTYPE html />
 <html lang="en">
-  <head>
-    <meta charset="utf8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>svelte-custom-element</title>
-    <link rel="stylesheet" href="global.css" />
+    <head>
+        <meta charset="utf8" />
+        <meta name="viewport" content="width=device-width" />
+        <title>svelte-custom-element</title>
+        <link rel="stylesheet" href="global.css" />
+    </head>
 
-  </head>
+    <body>
+        <div class="container">
+            <grid-graph>I am a default grid-graph.</grid-graph>
+        </div>
+    </body>
 
-  <body>
-    <div class="container">
-      <grid-graph>I am a default grid-graph.</grid-graph>
-    </div>    
-  </body>
-
-  <script>
-
-      const nodes = [
-        [ { id: 'A' },
-          { id: 'Bveryverylonglong', },
-          { id: 'C', title: 'Node C' },
-        ],
-        [
-          undefined,
-          { id: 'E', },
-          { id: 'F' },
+    <script>
+        const nodes = [
+            [
+                { id: 'A' },
+                { id: 'Bveryverylonglong' },
+                { id: 'C', title: 'Node C' },
+            ],
+            [undefined, { id: 'E' }, { id: 'F' }],
         ]
-      ];
-      nodes.forEach( row => {
-        row.forEach( node => {
-          if(node) {
-            node.background = '#e2e3e5'
-          }
-        })
-      })
-
-      const connectors = [
-        { from:'A', to:'E', color: 'blue' },
-        { from: 'A', to: 'Bveryverylonglong' },
-        { from:'C', to:'F' },
-        { from:'F', to:'C' }
-      ]
-      const els = document.querySelectorAll('grid-graph')
-      // 2. Loop over each targeted element and add an event listener for the custom "close" event
-      //  that sets the hidden attribute to "true" when the user clicks the close (X) icon.
-      Array.from(els).forEach(el => {
-        el.setAttribute('nodes', JSON.stringify(nodes))
-        el.setAttribute('connectors', JSON.stringify(connectors))
-        el.addEventListener("nodeclick", (e) => {
-          const nodeId = e.detail.nodeId
-          console.log('nodeclick', nodeId)
-          nodes.forEach( row => {
-            row.forEach( node => {
-              if(node) {
-                node.background = node.id === nodeId ? 'red' : '#e2e3e5'
-              }
+        nodes.forEach(row => {
+            row.forEach(node => {
+                if (node) {
+                    node.background = '#e2e3e5'
+                }
             })
-          })
-          el.setAttribute('nodes', JSON.stringify(nodes))
         })
-      })</script>
+
+        const connectors = [
+            { from: 'A', to: 'E', color: 'blue' },
+            { from: 'A', to: 'Bveryverylonglong' },
+            { from: 'C', to: 'F' },
+            { from: 'F', to: 'C' },
+        ]
+        const els = document.querySelectorAll('grid-graph')
+        // 2. Loop over each targeted element and add an event listener for the custom "close" event
+        //  that sets the hidden attribute to "true" when the user clicks the close (X) icon.
+        Array.from(els).forEach(el => {
+            el.setAttribute('nodes', JSON.stringify(nodes))
+            el.setAttribute('connectors', JSON.stringify(connectors))
+            el.addEventListener('nodeclick', e => {
+                const nodeId = e.detail.nodeId
+                console.log('nodeclick', nodeId)
+                nodes.forEach(row => {
+                    row.forEach(node => {
+                        if (node) {
+                            node.background =
+                                node.id === nodeId ? 'red' : '#e2e3e5'
+                        }
+                    })
+                })
+                el.setAttribute('nodes', JSON.stringify(nodes))
+            })
+        })
+    </script>
 </html>

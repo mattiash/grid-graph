@@ -4,18 +4,18 @@ These styles will NOT be applied to the Shadow DOM root of the custom element.
 */
 
 .container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    font-family: sans-serif;
 }
 
 grid-graph {
-  --node-color: blue;
-  --node-background:lightblue;
-  --node-selected-color: red;
-  --node-selected-background: pink;
-  --connector-color: green;
+    --node-color: blue;
+    --node-background: lightblue;
+    --node-selected-color: red;
+    --node-selected-background: pink;
+    --connector-color: green;
 }
