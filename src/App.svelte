@@ -224,7 +224,7 @@
     })
 
     function dispatchClickEvent(e) {
-        const nodeId = e.originalTarget.dataset.id
+        const nodeId = e.target.dataset.id
 
         const event = new CustomEvent('nodeclick', {
             bubbles: true,
