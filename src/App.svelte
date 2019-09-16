@@ -174,11 +174,11 @@
             const node2 = nodeMap.get(conn.to)
             if (!node1) {
                 console.log('No such node ' + conn.from)
-                return {...conn, x1: undefined}
+                return { ...conn, x1: undefined }
             }
             if (!node2) {
                 console.log('No such node ' + conn.to)
-                return {...conn, x1: undefined}
+                return { ...conn, x1: undefined }
             }
             const box1 = node1.box
             const box2 = node2.box
@@ -223,8 +223,20 @@
         destroyed = true
     })
 
+    let latestTouchedId = undefined
     function dispatchClickEvent(e) {
+        // The click event does not fire on ios safari when
+        // using the component from angularjs, but the touchstart
+        // event fires.
         const nodeId = e.target.dataset.id
+        if (e.type === 'click' && nodeId === latestTouchedId) {
+            latestTouchedId = undefined
+            return
+        }
+
+        if (e.type === 'touchstart') {
+            latestTouchedId = nodeId
+        }
 
         const event = new CustomEvent('nodeclick', {
             bubbles: true,
@@ -355,7 +367,8 @@ We also have to include the "customElement: true" compiler setting in rollup con
                                     background: {node.background || ' #e2e3e5'}"
                                     data-id={node.id}
                                     bind:this={divs[node.id].ref}
-                                    on:click={dispatchClickEvent}>
+                                    on:click={dispatchClickEvent}
+                                    on:touchstart={dispatchClickEvent}>
                                     {node.title || node.id}
                                 </div>
                             {/if}

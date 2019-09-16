@@ -9,7 +9,7 @@
     <head>
         <meta charset="utf8" />
         <meta name="viewport" content="width=device-width" />
-        <title>svelte-custom-element</title>
+        <title>grid-graph</title>
         <link rel="stylesheet" href="global.css" />
     </head>
 
@@ -52,8 +52,6 @@
             { from: 'H', to: 'K' },
         ]
         const els = document.querySelectorAll('grid-graph')
-        // 2. Loop over each targeted element and add an event listener for the custom "close" event
-        //  that sets the hidden attribute to "true" when the user clicks the close (X) icon.
         Array.from(els).forEach(el => {
             el.setAttribute('nodes', JSON.stringify(nodes))
             el.setAttribute('connectors', JSON.stringify(connectors))
