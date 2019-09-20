@@ -1,4 +1,3 @@
-
 # grid-graph
 
 ![npm (scoped)](https://img.shields.io/npm/v/@mattiash/grid-graph)
@@ -18,29 +17,22 @@ grid-graph is a [custom element](https://developer.mozilla.org/en-US/docs/Web/We
 `nodes` should be a json-encoded string containing a two-dimensional array of nodes.
 Each node is an object with the following properties:
 
-- id - an identifier for the node. Used as the label of the node and when defining connectors.
-- color - optional text-color for the node. Default #383d41
-- background - optional background for the node. Default #e2e3e5.
+-   id - an identifier for the node. Used as the label of the node and when defining connectors.
+-   color - optional text-color for the node. Default #383d41
+-   background - optional background for the node. Default #e2e3e5.
 
 ```javascript
-[
-    [ {id: 'A'}, {id: 'B'}],
-    [undefined, {id: 'C'}]
-]
+;[[{ id: 'A' }, { id: 'B' }], [undefined, { id: 'C' }]]
 ```
 
 `connectors` shall be an array of connector objects. Each connector object has the following properties:
 
-- from - the id of a node
-- to - the id of a node
-- color - the color of the connector. Default: black.
-
+-   from - the id of a node
+-   to - the id of a node
+-   color - the color of the connector. Default: #444.
 
 ```javascript
-[
-    { from: 'A', to: 'B' },
-    { from: 'A', to: 'C' }
-]
+;[{ from: 'A', to: 'B' }, { from: 'A', to: 'C' }]
 ```
 
 The grid-graph element emits a `nodeclick` whenever the user clicks a node,

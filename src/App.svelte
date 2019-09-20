@@ -3,6 +3,8 @@
 
     const internalPrefix = '__gg__'
     const nodeRadius = 5
+    const defaultConnectorColor = '#666'
+
     let svgWidth = 100
     let svgHeight = 100
     let clientWidth = 0
@@ -286,8 +288,9 @@
     }
 
     path {
-        stroke-width: 2px;
+        stroke-width: 1.2px;
         fill: transparent;
+        shape-rendering: geometricPrecision;
     }
 
     marker path {
@@ -313,13 +316,13 @@ We also have to include the "customElement: true" compiler setting in rollup con
                     <marker
                         id={conn.from + conn.to}
                         orient="auto"
-                        markerWidth="3"
-                        markerHeight="6"
+                        markerWidth="4"
+                        markerHeight="8"
                         refX="0.1"
-                        refY="3">
+                        refY="4">
                         <path
-                            d="M0,0 V6 L3,3 Z"
-                            style="fill: {conn.color || 'black'}" />
+                            d="M0,0 V8 L4,4 Z"
+                            style="fill: {conn.color || defaultConnectorColor}" />
                     </marker>
                 </defs>
                 {#if conn.x1 === conn.x2 && conn.y1 < conn.y2}
@@ -332,7 +335,7 @@ We also have to include the "customElement: true" compiler setting in rollup con
                         {middle(conn.y1, conn.y2)}
                         {conn.x2}
                         {conn.y2}"
-                        style="stroke: {conn.color || 'black'}"
+                        style="stroke: {conn.color || defaultConnectorColor}"
                         marker-end="url(#{conn.from + conn.to})" />
                 {:else if conn.x1 === conn.x2 && conn.y1 > conn.y2}
                     <!-- Straight up -->
@@ -344,7 +347,7 @@ We also have to include the "customElement: true" compiler setting in rollup con
                         {middle(conn.y1, conn.y2)}
                         {conn.x2}
                         {conn.y2}"
-                        style="stroke: {conn.color || 'black'}"
+                        style="stroke: {conn.color || defaultConnectorColor}"
                         marker-end="url(#{conn.from + conn.to})" />
                 {:else}
                     <path
@@ -355,7 +358,7 @@ We also have to include the "customElement: true" compiler setting in rollup con
                         {conn.y2}
                         {conn.x2}
                         {conn.y2}"
-                        style="stroke: {conn.color || 'black'}"
+                        style="stroke: {conn.color || defaultConnectorColor}"
                         marker-end="url(#{conn.from + conn.to})" />
                 {/if}
             {/if}
