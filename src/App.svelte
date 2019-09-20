@@ -5,6 +5,8 @@
     const nodeRadius = 5
     let svgWidth = 100
     let svgHeight = 100
+    let clientWidth = 0
+    let clientWidthDrawn = 1
 
     export let nodes = '[]'
     export let connectors = '[]'
@@ -66,6 +68,11 @@
                 }
             })
         })
+    }
+
+    $: if (clientWidth !== clientWidthDrawn) {
+        placeArrows()
+        clientWidthDrawn = clientWidth
     }
 
     function bbox(id) {
@@ -298,7 +305,7 @@ This tells the Svelte compiler that this file is a custom element.
 We also have to include the "customElement: true" compiler setting in rollup configuration.
 -->
 <svelte:options tag="grid-graph" />
-<div class="container">
+<div class="container" bind:clientWidth>
     <svg style="width: {svgWidth}px; height: {svgHeight}px">
         {#each _connectors as conn (conn)}
             {#if conn.x1 !== undefined}
