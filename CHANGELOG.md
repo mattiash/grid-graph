@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.3] - 2019-09-20
+
 -   Recalculate connectors when graph width changes
 
 ## [1.2.2] - 2019-09-16
