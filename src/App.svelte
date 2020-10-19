@@ -24,6 +24,7 @@
     //   title?: string
     //   color?: string
     //   background?: string
+    //   border?: string
     //   box?: {
     //     x1: number
     //     y1: number
@@ -62,8 +63,8 @@
     $: {
         nodeMap = new Map()
 
-        _nodes.forEach(row => {
-            row.forEach(node => {
+        _nodes.forEach((row) => {
+            row.forEach((node) => {
                 nodeMap.set(node.id, node)
                 if (node && !divs[node.id]) {
                     divs[node.id] = { ref: null }
@@ -130,8 +131,8 @@
                 // Spread out all connectors from this node
                 // to a node to the right on the right side of this node
                 const connFromRight = _connectors
-                    .filter(conn => conn.from === node.id)
-                    .filter(conn => {
+                    .filter((conn) => conn.from === node.id)
+                    .filter((conn) => {
                         const toNode = nodeMap.get(conn.to)
                         return toNode && toNode.box.x1 > node.box.x2
                     })
@@ -153,8 +154,8 @@
                 // Spread out all connectors to this node
                 // from a node to the left on the left side of this node
                 const connToLeft = _connectors
-                    .filter(conn => conn.to === node.id)
-                    .filter(conn => {
+                    .filter((conn) => conn.to === node.id)
+                    .filter((conn) => {
                         const fromNode = nodeMap.get(conn.from)
                         return fromNode && fromNode.box.x2 < node.box.x1
                     })
@@ -178,7 +179,7 @@
         svgWidth = width
         svgHeight = height
 
-        _connectors = _connectors.map(conn => {
+        _connectors = _connectors.map((conn) => {
             const node1 = nodeMap.get(conn.from)
             const node2 = nodeMap.get(conn.to)
             if (!node1) {
@@ -258,7 +259,7 @@
     }
 
     function sleep(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms))
+        return new Promise((resolve) => setTimeout(resolve, ms))
     }
 </script>
 
@@ -374,7 +375,7 @@ We also have to include the "customElement: true" compiler setting in rollup con
                                 <div
                                     class="node"
                                     style="color: {node.color || '#383d41'};
-                                    background: {node.background || ' #e2e3e5'}"
+                                    background: {node.background || ' #e2e3e5'}; border: {node.border || 'none'}"
                                     data-id={node.id}
                                     bind:this={divs[node.id].ref}
                                     on:click={dispatchClickEvent}

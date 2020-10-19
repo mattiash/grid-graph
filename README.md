@@ -20,6 +20,7 @@ Each node is an object with the following properties:
 -   id - an identifier for the node. Used as the label of the node and when defining connectors.
 -   color - optional text-color for the node. Default #383d41
 -   background - optional background for the node. Default #e2e3e5.
+-   border - optional border for the node. Default none.
 
 ```javascript
 ;[[{ id: 'A' }, { id: 'B' }], [undefined, { id: 'C' }]]
