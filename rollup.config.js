@@ -16,9 +16,11 @@ export default {
     },
     plugins: [
         svelte({
-            dev: !production,
-            // Tell the compiler to output a custom element.
-            customElement: true,
+            compilerOptions: {
+                dev: !production,
+                // Tell the compiler to output a custom element.
+                customElement: true,
+            }
         }),
         // If you have external dependencies installed from
         // npm, you'll most likely need these plugins. In
