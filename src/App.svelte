@@ -197,7 +197,20 @@
                     // Already placed
                     return conn
                 } else if (middle(box2.x1, box2.x2) < box1.x1) {
-                    console.log('from cannot be to the right of to')
+                    if (box1.y1 < box2.y2) {
+                        // from above to
+                        const x1 = middle(box1.x1, box1.x2)
+                        const x2 = middle(box2.x1, box2.x2)
+                        const y1 = box1.y2
+                        const y2 = box2.y1 - 4
+                        return { ...conn, x1, y1, x2, y2 }
+                    } else {
+                        const x1 = middle(box1.x1, box1.x2)
+                        const x2 = middle(box2.x1, box2.x2)
+                        const y1 = box1.y1
+                        const y2 = box2.y2 + 4
+                        return { ...conn, x1, y1, x2, y2 }
+                    }
                 } else {
                     // same column
                     if (box1.y1 < box2.y2) {
@@ -326,7 +339,7 @@ We also have to include the "customElement: true" compiler setting in rollup con
                             style="fill: {conn.color || defaultConnectorColor}" />
                     </marker>
                 </defs>
-                {#if conn.x1 === conn.x2 && conn.y1 < conn.y2}
+                {#if conn.x1 >= conn.x2 && conn.y1 < conn.y2}
                     <!-- Straight down -->
                     <path
                         d="M {conn.x1}
@@ -338,7 +351,7 @@ We also have to include the "customElement: true" compiler setting in rollup con
                         {conn.y2}"
                         style="stroke: {conn.color || defaultConnectorColor}"
                         marker-end="url(#{conn.from + conn.to})" />
-                {:else if conn.x1 === conn.x2 && conn.y1 > conn.y2}
+                {:else if conn.x1 >= conn.x2 && conn.y1 > conn.y2}
                     <!-- Straight up -->
                     <path
                         d="M {conn.x1}
