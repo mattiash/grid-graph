@@ -297,7 +297,7 @@
         position: absolute;
         top: 0;
         left: 0;
-        z-index: 0;
+        z-index: -1;
         pointer-events: none;
     }
 
