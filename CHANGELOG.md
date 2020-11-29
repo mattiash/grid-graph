@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.1] - 2020-11-29
+
+-   Draw connectors from right to left also
+-   Draw connectors behind nodes
+
 ## [1.3.0] - 2020-10-19
 
 -   Add border property for nodes
