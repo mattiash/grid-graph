@@ -281,6 +281,10 @@
         position: relative;
     }
 
+    table {
+        position: relative;
+        z-index: 1;
+    }
     .node {
         display: inline-block;
         border-radius: 5px;
@@ -289,7 +293,6 @@
         text-align: center;
         min-width: 50px;
         width: auto;
-        z-index: 100;
         cursor: pointer;
     }
 
@@ -297,7 +300,6 @@
         position: absolute;
         top: 0;
         left: 0;
-        z-index: -1;
         pointer-events: none;
     }
 

@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+-   Avoid z-index -1
+
 ## [1.3.1] - 2020-11-29
 
 -   Draw connectors from right to left also
