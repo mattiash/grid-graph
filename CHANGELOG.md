@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.4.1] - 2022-01-23
+
+-   Release with github action
+
 ## [1.4.0] - 2022-01-23
 
 -   Make node-padding and node-margin configurable
