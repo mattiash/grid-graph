@@ -44,6 +44,15 @@ See `public/index.html` for a complete example.
 See [@mattiash/grid-graph-placement](https://github.com/mattiash/grid-graph-placement) for a module
 that automatically places out your nodes on a grid.
 
+## Styling
+
+The grid-graph can be styled with css variables.
+
+```html
+<grid-graph style="--node-margin: 5px 30px; --node-padding: 2px 10px">
+</grid-graph>
+```
+
 ## Development
 
 ```

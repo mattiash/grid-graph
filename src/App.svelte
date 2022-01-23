@@ -288,8 +288,8 @@
     .node {
         display: inline-block;
         border-radius: 5px;
-        padding: 16px;
-        margin: 10px 30px;
+        padding: var(--node-padding, 16px);
+        margin: var(--node-margin, 10px 30px);
         text-align: center;
         min-width: 50px;
         width: auto;
