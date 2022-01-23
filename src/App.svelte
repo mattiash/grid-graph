@@ -1,3 +1,9 @@
+<!-- 
+This tells the Svelte compiler that this file is a custom element. 
+We also have to include the "customElement: true" compiler setting in rollup configuration.
+-->
+<svelte:options tag="grid-graph" />
+
 <script>
     import { afterUpdate, onDestroy, tick } from 'svelte'
 
@@ -36,7 +42,7 @@
     $: {
         _nodes = JSON.parse(nodes).map((row, y) => {
             return row.map((node, x) =>
-                !!node ? node : { id: `${internalPrefix}${x}_${y}` },
+                !!node ? node : { id: `${internalPrefix}${x}_${y}` }
             )
         })
 
@@ -276,6 +282,96 @@
     }
 </script>
 
+<div class="container" bind:clientWidth>
+    <svg style="width: {svgWidth}px; height: {svgHeight}px">
+        {#each _connectors as conn (conn)}
+            {#if conn.x1 !== undefined}
+                <defs>
+                    <marker
+                        id={conn.from + conn.to}
+                        orient="auto"
+                        markerWidth="4"
+                        markerHeight="8"
+                        refX="0.1"
+                        refY="4"
+                    >
+                        <path
+                            d="M0,0 V8 L4,4 Z"
+                            style="fill: {conn.color || defaultConnectorColor}"
+                        />
+                    </marker>
+                </defs>
+                {#if conn.x1 >= conn.x2 && conn.y1 < conn.y2}
+                    <!-- Straight down -->
+                    <path
+                        d="M {conn.x1}
+                        {conn.y1} C {conn.x1 + 5}
+                        {middle(conn.y1, conn.y2)}
+                        {conn.x1 + 5}
+                        {middle(conn.y1, conn.y2)}
+                        {conn.x2}
+                        {conn.y2}"
+                        style="stroke: {conn.color || defaultConnectorColor}"
+                        marker-end="url(#{conn.from + conn.to})"
+                    />
+                {:else if conn.x1 >= conn.x2 && conn.y1 > conn.y2}
+                    <!-- Straight up -->
+                    <path
+                        d="M {conn.x1}
+                        {conn.y1} C {conn.x1 - 5}
+                        {middle(conn.y1, conn.y2)}
+                        {conn.x1 - 5}
+                        {middle(conn.y1, conn.y2)}
+                        {conn.x2}
+                        {conn.y2}"
+                        style="stroke: {conn.color || defaultConnectorColor}"
+                        marker-end="url(#{conn.from + conn.to})"
+                    />
+                {:else}
+                    <path
+                        d="M {conn.x1}
+                        {conn.y1} C {middle(conn.x1, conn.x2)}
+                        {conn.y1}
+                        {middle(conn.x1, conn.x2)}
+                        {conn.y2}
+                        {conn.x2}
+                        {conn.y2}"
+                        style="stroke: {conn.color || defaultConnectorColor}"
+                        marker-end="url(#{conn.from + conn.to})"
+                    />
+                {/if}
+            {/if}
+        {/each}
+    </svg>
+    <table>
+        <tbody>
+            {#each _nodes as row (row)}
+                <tr>
+                    {#each row as node (node.id)}
+                        <td>
+                            {#if !node.id.startsWith(internalPrefix)}
+                                <div
+                                    class="node"
+                                    style="color: {node.color || '#383d41'};
+                                    background: {node.background ||
+                                        ' #e2e3e5'}; border: {node.border ||
+                                        'none'}"
+                                    data-id={node.id}
+                                    bind:this={divs[node.id].ref}
+                                    on:click={dispatchClickEvent}
+                                    on:touchstart={dispatchClickEvent}
+                                >
+                                    {node.title || node.id}
+                                </div>
+                            {/if}
+                        </td>
+                    {/each}
+                </tr>
+            {/each}
+        </tbody>
+    </table>
+</div>
+
 <style>
     .container {
         position: relative;
@@ -318,90 +414,3 @@
         text-align: center;
     }
 </style>
-
-<!-- 
-This tells the Svelte compiler that this file is a custom element. 
-We also have to include the "customElement: true" compiler setting in rollup configuration.
--->
-<svelte:options tag="grid-graph" />
-<div class="container" bind:clientWidth>
-    <svg style="width: {svgWidth}px; height: {svgHeight}px">
-        {#each _connectors as conn (conn)}
-            {#if conn.x1 !== undefined}
-                <defs>
-                    <marker
-                        id={conn.from + conn.to}
-                        orient="auto"
-                        markerWidth="4"
-                        markerHeight="8"
-                        refX="0.1"
-                        refY="4">
-                        <path
-                            d="M0,0 V8 L4,4 Z"
-                            style="fill: {conn.color || defaultConnectorColor}" />
-                    </marker>
-                </defs>
-                {#if conn.x1 >= conn.x2 && conn.y1 < conn.y2}
-                    <!-- Straight down -->
-                    <path
-                        d="M {conn.x1}
-                        {conn.y1} C {conn.x1 + 5}
-                        {middle(conn.y1, conn.y2)}
-                        {conn.x1 + 5}
-                        {middle(conn.y1, conn.y2)}
-                        {conn.x2}
-                        {conn.y2}"
-                        style="stroke: {conn.color || defaultConnectorColor}"
-                        marker-end="url(#{conn.from + conn.to})" />
-                {:else if conn.x1 >= conn.x2 && conn.y1 > conn.y2}
-                    <!-- Straight up -->
-                    <path
-                        d="M {conn.x1}
-                        {conn.y1} C {conn.x1 - 5}
-                        {middle(conn.y1, conn.y2)}
-                        {conn.x1 - 5}
-                        {middle(conn.y1, conn.y2)}
-                        {conn.x2}
-                        {conn.y2}"
-                        style="stroke: {conn.color || defaultConnectorColor}"
-                        marker-end="url(#{conn.from + conn.to})" />
-                {:else}
-                    <path
-                        d="M {conn.x1}
-                        {conn.y1} C {middle(conn.x1, conn.x2)}
-                        {conn.y1}
-                        {middle(conn.x1, conn.x2)}
-                        {conn.y2}
-                        {conn.x2}
-                        {conn.y2}"
-                        style="stroke: {conn.color || defaultConnectorColor}"
-                        marker-end="url(#{conn.from + conn.to})" />
-                {/if}
-            {/if}
-        {/each}
-    </svg>
-    <table>
-        <tbody>
-            {#each _nodes as row (row)}
-                <tr>
-                    {#each row as node (node.id)}
-                        <td>
-                            {#if !node.id.startsWith(internalPrefix)}
-                                <div
-                                    class="node"
-                                    style="color: {node.color || '#383d41'};
-                                    background: {node.background || ' #e2e3e5'}; border: {node.border || 'none'}"
-                                    data-id={node.id}
-                                    bind:this={divs[node.id].ref}
-                                    on:click={dispatchClickEvent}
-                                    on:touchstart={dispatchClickEvent}>
-                                    {node.title || node.id}
-                                </div>
-                            {/if}
-                        </td>
-                    {/each}
-                </tr>
-            {/each}
-        </tbody>
-    </table>
-</div>
