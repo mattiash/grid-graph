@@ -1,5 +1,7 @@
 # grid-graph
 
+![Build master](https://github.com/mattiash/grid-graph/workflows/Build%20master/badge.svg)
+![Publish to npm](https://github.com/mattiash/grid-graph/workflows/Publish%20to%20npm/badge.svg)
 ![npm (scoped)](https://img.shields.io/npm/v/@mattiash/grid-graph)
 
 Built from component template at [https://github.com/gojutin/svelte-custom-element](https://github.com/gojutin/svelte-custom-element).
