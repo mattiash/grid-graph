@@ -35,6 +35,7 @@
         "dev": "run-p start:dev autobuild",
         "start": "sirv public",
         "start:dev": "sirv public --dev",
-        "lint": "prettier -l src/*"
+        "lint": "prettier -l src/*",
+        "test": "echo No tests..."
     }
 }
