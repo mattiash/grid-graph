@@ -19,13 +19,17 @@ grid-graph is a [custom element](https://developer.mozilla.org/en-US/docs/Web/We
 `nodes` should be a json-encoded string containing a two-dimensional array of nodes.
 Each node is an object with the following properties:
 
--   id - an identifier for the node. Used as the label of the node and when defining connectors.
+-   id - an identifier for the node. Used when defining connectors and in `nodeclick` events.
+-   title - optional label displayed on the node. Defaults to `id` if not set.
 -   color - optional text-color for the node. Default #383d41
 -   background - optional background for the node. Default #e2e3e5.
 -   border - optional border for the node. Default none.
 
 ```javascript
-;[[{ id: 'A' }, { id: 'B' }], [undefined, { id: 'C' }]]
+;[
+    [{ id: 'A' }, { id: 'B' }],
+    [undefined, { id: 'C', title: 'Node C (5%)' }],
+]
 ```
 
 `connectors` shall be an array of connector objects. Each connector object has the following properties:
@@ -35,7 +39,10 @@ Each node is an object with the following properties:
 -   color - the color of the connector. Default: #444.
 
 ```javascript
-;[{ from: 'A', to: 'B' }, { from: 'A', to: 'C' }]
+;[
+    { from: 'A', to: 'B' },
+    { from: 'A', to: 'C' },
+]
 ```
 
 The grid-graph element emits a `nodeclick` whenever the user clicks a node,
